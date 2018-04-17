@@ -11,10 +11,6 @@ import retrofit2.Retrofit;
 /**
  * <b>类名称：</b> FastJsonConverterFactory <br/>
  * <b>类描述：</b> FastJsonCoverter<br/>
- * <b>创建人：</b> Lincoln <br/>
- * <b>修改人：</b> Lincoln <br/>
- * <b>修改时间：</b> 2016年03月08日 下午3:48<br/>
- * <b>修改备注：</b> <br/>
  *
  * @version 1.0.0 <br/>
  */

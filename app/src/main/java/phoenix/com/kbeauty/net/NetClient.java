@@ -1,8 +1,11 @@
 package phoenix.com.kbeauty.net;
 
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -16,11 +19,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import phoenix.com.kbeauty.BuildConfig;
+import phoenix.com.kbeauty.KApplication;
 import phoenix.com.kbeauty.base.AppConfig;
 import phoenix.com.kbeauty.base.BaseBean;
 import phoenix.com.kbeauty.net.fastjson.FastJsonConverterFactory;
@@ -32,14 +37,13 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  * <p>
  * 创建时间 on 2017/5/31.
  * <p>
- * 功能：主要的网络请求端口
- *      待处理问题：1如果有helder因为单例，第二次hedler是传不过来的额
- *                2强转换ResponseException 检查转换异常
+ * 功能：
+ *
+ *
  */
 
 public class NetClient {
-    private volatile static NetClient mInstance;
-    private volatile static NetClient mInstance2Headers;
+    private volatile static   NetClient mInstance;
 
     private Retrofit sim;
     private NetApi netApi;
@@ -55,16 +59,6 @@ public class NetClient {
         return mInstance;
     }
 
-    public static NetClient getInstance(HashMap<String,String> headers) {
-        if(null== mInstance){
-            synchronized (NetClient.class){
-                if(null == mInstance){
-                    mInstance = new NetClient(headers);
-                }
-            }
-        }
-        return mInstance;
-    }
 
 
     private NetClient(HashMap<String,String> headers){
@@ -74,15 +68,15 @@ public class NetClient {
         //增加helder
         addHeaders(okHttpClientBuilder,headers==null?new HashMap<String, String>():headers);
 
-                /* cache   暂时不开放*/
-//          Cache cache = null;
-//          File cacheFile =null;
-//          try {
-//                cacheFile = new File(UIUtils.getAppContext().getCacheDir(), "net_cache");
-//                cache = new Cache(cacheFile, 10 * 1024 * 1024);
-//          } catch (Exception e) {
-//                Log.e("OKHttp", "Could not create http cache", e);
-//          }
+        //cache
+          Cache cache = null;
+          File cacheFile =null;
+          try {
+                cacheFile = new File(KApplication.Companion.instance().getCacheDir(), "net_cache");
+                cache = new Cache(cacheFile, 10 * 1024 * 1024);
+          } catch (Exception e) {
+                Log.e("OKHttp", "Could not create http cache", e);
+          }
         Dispatcher dispatcher = new Dispatcher(Executors.newFixedThreadPool(20));
         dispatcher.setMaxRequests(20);
         dispatcher.setMaxRequestsPerHost(1);
@@ -92,11 +86,11 @@ public class NetClient {
                                 HttpLoggingInterceptorM.Level.NONE))
                 .dispatcher(dispatcher)
                 .connectionPool(new ConnectionPool(100, 30, TimeUnit.SECONDS))
-                //.cache(cache)
-                // .addInterceptor(new CaheInterceptor())
-                // .addNetworkInterceptor(new CaheInterceptor())
+                .cache(cache)
+                .addInterceptor(new CaheInterceptor())
+                 .addNetworkInterceptor(new CaheInterceptor())
                 .retryOnConnectionFailure(false)
-                //.writeTimeout(AppConfig.NET_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(5000, TimeUnit.SECONDS)
                 .build();
         sim = new Retrofit.Builder()
                 .baseUrl(AppConfig.Companion.getBase_url())
@@ -127,7 +121,7 @@ public class NetClient {
      * 清理实例重建
      */
 
-    public static void reCreate(){
+    public static void clr(){
         mInstance = null;
     }
 

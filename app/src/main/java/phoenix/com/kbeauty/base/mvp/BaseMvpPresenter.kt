@@ -9,8 +9,7 @@ package phoenix.com.kbeauty.base.mvp
  */
 open class BaseMvpPresenter<V:BaseMvpView> :MvpPresenterInterface<V> {
     var mView :V ?= null
-    //Todo 私有
-    override fun linkView(view: V) {
+    override   fun linkView(view: V) {
         mView = view
 
     }
