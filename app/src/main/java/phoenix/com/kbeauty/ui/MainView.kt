@@ -11,7 +11,7 @@ import phoenix.com.kbeauty.base.mvp.BaseMvpView
  */
 interface MainView : BaseMvpView {
 
-    open fun flushUi(fuliBean: FuliBean)
+     fun flushUi(fuliBean: FuliBean)
 
 
 }

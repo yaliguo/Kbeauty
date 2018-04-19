@@ -7,5 +7,5 @@ package phoenix.com.kbeauty.base.mvp
  *
  *  use
  */
-open interface BaseMvpView {
+ interface BaseMvpView {
 }
