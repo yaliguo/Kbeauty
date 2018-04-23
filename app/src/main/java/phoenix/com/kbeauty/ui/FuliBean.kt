@@ -11,7 +11,7 @@ import phoenix.com.kbeauty.base.BaseBean
  */
  data class FuliBean (val results:List<FuliInfo> ){
 
- data class FuliInfo(val url : String ?)
+ data class FuliInfo(val url : String ?,var desc : String ?,var height : Int)
 
 
 }
