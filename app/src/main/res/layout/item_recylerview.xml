@@ -19,6 +19,8 @@
             android:layout_height="wrap_content">
 
                 <ImageView
+                    android:transitionName="share"
+
                     android:id="@+id/rc_item_img"
                     android:scaleType="fitXY"
                     android:layout_width="match_parent"

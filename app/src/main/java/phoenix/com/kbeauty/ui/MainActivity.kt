@@ -1,11 +1,16 @@
 package phoenix.com.kbeauty.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Handler
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.StaggeredGridLayoutManager
 import com.andview.refreshview.XRefreshView
 import phoenix.com.kbeauty.R
 import phoenix.com.kbeauty.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import phoenix.com.kbeauty.base.Apis.Companion.fuli
 
 class MainActivity : BaseActivity<MainView,MainPresenter>(),MainView {
 
@@ -45,6 +50,17 @@ class MainActivity : BaseActivity<MainView,MainPresenter>(),MainView {
 
         //init adapter
         adapter!!.customLoadMoreView = XRefreshViewFooter(this)
+        adapter!!.SetItemClickListener( { info, holder, position ->
+            val intent = Intent(this@MainActivity, BigImgActivity::class.java)
+            intent.putExtra("url", info.url)
+            val options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this@MainActivity, holder.img, "share")
+            ActivityCompat.startActivity(this@MainActivity, intent, options.toBundle())
+
+        })
+
+
+
 
         //init rv
         act_main_xrefresh.setPinnedTime(1000)

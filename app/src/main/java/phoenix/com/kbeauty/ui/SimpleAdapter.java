@@ -1,10 +1,14 @@
 package phoenix.com.kbeauty.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.DisplayMetrics;
@@ -38,6 +42,14 @@ public class SimpleAdapter extends BaseRecyclerAdapter<SimpleAdapter.SimpleAdapt
     private Context context;
     private final int screenWidth;
     private final int heightPixels;
+    public AdpClickListener l;
+    public void SetItemClickListener(AdpClickListener l){
+        this.l=l;
+    }
+    public  interface AdpClickListener {
+        public void onClick(FuliBean.FuliInfo info, SimpleAdapterViewHolder holder, int position);
+    }
+
     public SimpleAdapter( Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;
@@ -50,14 +62,14 @@ public class SimpleAdapter extends BaseRecyclerAdapter<SimpleAdapter.SimpleAdapt
     }
 
     @Override
-    public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position, boolean isItem) {
+    public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position, boolean isItem) {
 
         //存在记录的高度时先Layout再异步加载图片
         if (list.get(holder.getAdapterPosition()).getHeight() > 0) {
             ViewGroup.LayoutParams layoutParams = holder.img.getLayoutParams();
             layoutParams.height = list.get(holder.getAdapterPosition()).getHeight();
         }
-        FuliBean.FuliInfo fuli = list.get(position);
+        final FuliBean.FuliInfo fuli = list.get(position);
         GlideApp.with(context)
                 .load(fuli.getUrl())
                 .placeholder(R.mipmap.placeholder_banner)
@@ -81,6 +93,15 @@ public class SimpleAdapter extends BaseRecyclerAdapter<SimpleAdapter.SimpleAdapt
                 });
 
         holder.textView.setText(fuli.getDesc());
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(l!=null){
+                    l.onClick(fuli,holder,position);
+                }
+
+            }
+        });
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
     }
 
