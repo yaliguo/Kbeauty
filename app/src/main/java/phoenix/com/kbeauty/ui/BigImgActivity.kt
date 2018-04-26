@@ -20,7 +20,7 @@ import phoenix.com.kbeauty.base.BaseActivity
 class BigImgActivity : BaseActivity<BigImgView, BigImgPresenter>(),BigImgView {
     override fun initThis() {
         var img : ImageView =  findViewById(R.id.act_big_img)
-      var url =  intent.getStringExtra("url")
+        var url =  intent.getStringExtra("url")
         GlideApp.with(this@BigImgActivity)
                 .load(url)
                 .placeholder(R.mipmap.placeholder_banner)

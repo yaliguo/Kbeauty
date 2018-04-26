@@ -73,11 +73,13 @@ public class ExceptionHandle {
             ex = new ResponseException(e, ERROR.TIMEOUT_ERROR);
             ex.message = "连接超时";
             return ex;
-        } else if (e instanceof java.net.SocketTimeoutException || e instanceof java.net.SocketException) {
-            ex = new ResponseException(e, ERROR.TIMEOUT_ERROR);
-            ex.message = "连接超时";
-            return ex;
-        } else if (e instanceof java.net.UnknownHostException) {
+        }
+//        else if (e instanceof java.net.SocketTimeoutException || e instanceof java.net.SocketException) {
+//            ex = new ResponseException(e, ERROR.TIMEOUT_ERROR);
+//            ex.message = "连接超时";
+//            return ex;
+//        }
+        else if (e instanceof java.net.UnknownHostException) {
             ex = new ResponseException(e, ERROR.UNKONW_HOST_ERROR);
             ex.message = "连接错误";
             return ex;

@@ -3,10 +3,12 @@ package phoenix.com.kbeauty.ui
 import android.widget.Toast
 import com.alibaba.fastjson.JSON
 import io.reactivex.Observable
+import io.reactivex.functions.Consumer
 import okhttp3.ResponseBody
 import phoenix.com.kbeauty.base.Apis
 import phoenix.com.kbeauty.base.BaseBean
 import phoenix.com.kbeauty.base.mvp.BaseMvpPresenter
+import phoenix.com.kbeauty.net.LogUtil
 import phoenix.com.kbeauty.net.NetClient
 
 /**
@@ -22,9 +24,7 @@ open class MainPresenter : BaseMvpPresenter<MainView> (){
      NetClient.getInstance().getJsonBody(Apis.fuli+"/"+"10/"+index,HashMap<String,String>())
              .map { res -> res.string() }
              .map { str -> JSON.parseObject(str,FuliBean::class.java) }
-             .doOnError {  }
-             .subscribe { bean -> mView?.flushUi(bean) }
-
+             .subscribe( { bean -> mView?.flushUi(bean)  },  {t ->  LogUtil.e("发生一个错误")  })
 
     }
 

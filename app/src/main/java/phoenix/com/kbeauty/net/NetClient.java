@@ -90,7 +90,7 @@ public class NetClient {
                 .addInterceptor(new CaheInterceptor())
                  .addNetworkInterceptor(new CaheInterceptor())
                 .retryOnConnectionFailure(false)
-                .writeTimeout(5000, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
                 .build();
         sim = new Retrofit.Builder()
                 .baseUrl(AppConfig.Companion.getBase_url())
@@ -158,8 +158,8 @@ public class NetClient {
 
     public Observable<ResponseBody> getJsonBody(String url, Map parameters){
         return netApi.json(url,parameters)
-                .compose(schedulersTransformer())
-                .onErrorResumeNext(new HttpErrorDespatchFun<>());
+                .onErrorResumeNext(new HttpErrorDespatchFun<>())
+                .compose(schedulersTransformer());
     }
     @SuppressWarnings("unchecked")
 

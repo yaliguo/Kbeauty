@@ -25,6 +25,7 @@ import com.andview.refreshview.recyclerview.BaseRecyclerAdapter;
 import com.andview.refreshview.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -73,6 +74,7 @@ public class SimpleAdapter extends BaseRecyclerAdapter<SimpleAdapter.SimpleAdapt
         GlideApp.with(context)
                 .load(fuli.getUrl())
                 .placeholder(R.mipmap.placeholder_banner)
+                //.diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
