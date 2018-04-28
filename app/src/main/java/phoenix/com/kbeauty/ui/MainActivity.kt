@@ -6,10 +6,12 @@ import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.widget.Toast
 import com.andview.refreshview.XRefreshView
 import phoenix.com.kbeauty.R
 import phoenix.com.kbeauty.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import phoenix.com.kbeauty.JinUtils
 import phoenix.com.kbeauty.base.Apis.Companion.fuli
 
 class MainActivity : BaseActivity<MainView,MainPresenter>(),MainView {
@@ -41,7 +43,12 @@ class MainActivity : BaseActivity<MainView,MainPresenter>(),MainView {
 
     }
     override fun initThis() {
+        JinUtils.createText(MainActivity@this)
 
+       var s = JinUtils.readText(filesDir.absolutePath+"/hello_file.txt")
+
+        JinUtils.addText(MainActivity@this)
+        Toast.makeText(MainActivity@this,s,Toast.LENGTH_LONG).show()
         adapter   =  SimpleAdapter(this)
 
         //init recycle view

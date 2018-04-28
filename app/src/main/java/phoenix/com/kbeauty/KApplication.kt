@@ -10,6 +10,13 @@ import android.app.Application
  *  use
  */
 class KApplication : Application() {
+
+    init {
+
+        System.loadLibrary("test_lib")
+
+    }
+
     companion object {
         private var instance : Application? =null
         fun instance() = instance!!
